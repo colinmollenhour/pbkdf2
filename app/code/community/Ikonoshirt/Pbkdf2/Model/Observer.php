@@ -56,6 +56,7 @@ class Ikonoshirt_Pbkdf2_Model_Observer
             $password, $customer->getPasswordHash()
         )
         ) {
+            $customer->setOldHashReplaced(TRUE);
             $customer->setPassword($password);
             $customer->save();
         }
@@ -85,6 +86,7 @@ class Ikonoshirt_Pbkdf2_Model_Observer
         $user = $observer->getModel();
         $password = $observer->getApiKey();
         if ($encrypter->validateLegacyHash($password, $user->getApiKey())) {
+            $user->setOldHashReplaced(TRUE);
             $user->setApiKey($observer->getApiKey());
             $user->save();
         }
@@ -110,6 +112,7 @@ class Ikonoshirt_Pbkdf2_Model_Observer
         $user = $observer->getUser();
         $password = $observer->getPassword();
         if ($encrypter->validateLegacyHash($password, $user->getPassword())) {
+            $user->setOldHashReplaced(TRUE);
             $user->setPassword($observer->getPassword());
             $user->save();
         }
